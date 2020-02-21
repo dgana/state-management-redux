@@ -1,8 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import logo from './logo.svg'
+import { connect } from 'react-redux'
+import './App.css'
+import { increment as tambah, decrement as kurang } from './actions'
 
-function App() {
+function App({ currentNum, increment, decrement }) {
   return (
     <div className="App">
       <header className="App-header">
@@ -10,17 +12,30 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className="flex">
+          <button onClick={() => increment(1)} className="w2 h2 f5 mr2">
+            +
+          </button>
+          <button onClick={() => decrement(1)} className="w2 h2 f5">
+            -
+          </button>
+        </div>
+        <p>Current Number : {currentNum}</p>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+const mapStateToProps = state => {
+  console.log(state)
+  return {
+    currentNum: state.counter
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  increment: payload => dispatch(tambah(payload)),
+  decrement: payload => dispatch(kurang(payload))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
